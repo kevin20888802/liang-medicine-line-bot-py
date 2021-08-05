@@ -1,0 +1,4 @@
+line-bot-sdk
+gunicorn==19.9.0
+numpy
+flask
