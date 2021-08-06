@@ -1,15 +1,16 @@
 import psycopg2
-
+import os
 
 class PostgresBaseManager:
 
-    def __init__(self):
+    def __init__(self,local):
 
         self.database = 'postgres'
         self.user = 'postgres'
         self.password = '1234'
         self.host = 'localhost'
         self.port = '5432'
+        self.localTest = local
         self.conn = self.connect()
     pass
 
@@ -17,13 +18,18 @@ class PostgresBaseManager:
         """
         :return: 連接 Heroku Postgres SQL 認證用
         """
-        conn = psycopg2.connect(
-            database=self.database,
-            user=self.user,
-            password=self.password,
-            host=self.host,
-            port=self.port)
-        return conn
+        if self.localTest == True:
+            conn = psycopg2.connect(
+                database=self.database,
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                port=self.port)
+            return conn
+        else:
+            conn = psycopg2.connect(os.environ['DATABASE_URL'])
+            return conn
+        pass
     pass
 
     def disconnect(self):

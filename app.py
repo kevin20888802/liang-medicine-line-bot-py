@@ -15,7 +15,7 @@ from linebot.models.messages import ImageMessage
 from linebot.models.send_messages import ImageSendMessage
 
 # 系統相關lib
-from threading import Timer
+from threading import Timer, local
 import os
 import io
 from datetime import datetime
@@ -49,7 +49,9 @@ handler = WebhookHandler(_secret)
 #------------------------------------------------
 
 from lib.db_manager import PostgresBaseManager as dbm
-db_manager = dbm()
+db_manager = dbm(local_test)
+
+
 from lib.user_stat_manager import User_Status_Manager 
 userstat = User_Status_Manager(db_manager,line_bot_api)
 
@@ -89,7 +91,7 @@ def handle_message_text(event):
     # 狀態對應表
     msgStatus = {"提醒":"notify_0_0"
     ,"吃藥":"takemed_0_0"
-    ,"查詢":"查詢_0"
+    ,"查詢":"finddrug_0"
     ,"拿藥":"showmap"
     ,"吃什麼藥":"shownotify_0_0"
     ,"吃藥紀錄":"showtakehistory"}

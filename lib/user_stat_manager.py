@@ -3,6 +3,7 @@ from .act_takemedicine import TakeMedicineActions
 from .act_showtakehistory import ShowTakeActions
 from .act_shownotify import ShowNotifyActions
 from .act_showmap import ShowMapActions
+from .act_finddrug import FindDrugActions
 from .db_manager import PostgresBaseManager as dbm
 
 
@@ -16,6 +17,7 @@ class User_Status_Manager:
         showtakeActs = ShowTakeActions(DBmanager,botapi,self)
         showNotifyActions = ShowNotifyActions(DBmanager,botapi,self)
         showMapActions = ShowMapActions(DBmanager,botapi,self)
+        findDrugActions = FindDrugActions(DBmanager,botapi,self)
         self.statActions = {
             "notify_0_0":notifyActs.notify_0_0,
             "notify_0_1":notifyActs.notify_0_1,
@@ -29,7 +31,9 @@ class User_Status_Manager:
             "showtakehistory":showtakeActs.showtakehistory,
             "shownotify_0_0":showNotifyActions.shownotify_0_0,
             "shownotify_0_1":showNotifyActions.shownotify_0_1,
-            "showmap":showMapActions.showmap
+            "showmap":showMapActions.showmap,
+            "finddrug_0":findDrugActions.finddrug_0,
+            "finddrug_1":findDrugActions.finddrug_1
         }
     pass
 
