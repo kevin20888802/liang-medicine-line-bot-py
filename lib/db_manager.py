@@ -77,7 +77,7 @@ Create Table If Not Exists UserStatus
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             print(DATABASE_URL)
-            cur = self.conn.cursor()
+            cur = conn.cursor()
             cur.execute('SELECT VERSION()')
             results = cur.fetchall()
             print("Database version : {0} ".format(results))
