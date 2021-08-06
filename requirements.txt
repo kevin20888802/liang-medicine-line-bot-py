@@ -4,3 +4,6 @@ numpy
 flask
 pyzbar
 Pillow
+psycopg2
+bs4
+requests
