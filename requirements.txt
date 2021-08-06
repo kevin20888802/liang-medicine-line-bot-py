@@ -4,6 +4,7 @@ numpy
 flask
 pyzbar==0.1.8
 Pillow
+urllib
 psycopg2
 bs4
 requests

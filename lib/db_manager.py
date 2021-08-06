@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import os
+import urllib.parse as urlparse
 
 class PostgresBaseManager:
 
@@ -30,7 +31,19 @@ class PostgresBaseManager:
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             return conn
         else:
-            conn = psycopg2.connect(os.environ['DATABASE_URL'])
+            url = urlparse.urlparse(os.environ['DATABASE_URL'])
+            dbname = url.path[1:]
+            user = url.username
+            password = url.password
+            host = url.hostname
+            port = url.port
+            conn = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+            )
             conn.autocommit = True
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             return conn
