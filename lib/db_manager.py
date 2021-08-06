@@ -25,9 +25,11 @@ class PostgresBaseManager:
                 password=self.password,
                 host=self.host,
                 port=self.port)
+            conn.autocommit = True
             return conn
         else:
             conn = psycopg2.connect(os.environ['DATABASE_URL'])
+            conn.autocommit = True
             return conn
         pass
     pass
