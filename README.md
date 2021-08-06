@@ -1,1 +1,3 @@
-# liang-medicine-line-bot-py
+# 醫藥助手阿良
+
+他可以協助你甲藥仔。
