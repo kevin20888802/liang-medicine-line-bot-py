@@ -148,7 +148,8 @@ pass
 if __name__ == "__main__":
     db_manager.connect()
     db_manager.testConnection()
-    db_manager.executeFile("sql/setupAppDB.sql")
+    db_manager.execute(db_manager.setupSQLCMD)
+    #db_manager.executeFile("sql/setupAppDB.sql")
     every_halfmin()
     app.run()
     db_manager.disconnect()
