@@ -90,9 +90,9 @@ def handle_message_text(event):
     msgStatus = {"提醒":"notify_0_0"
     ,"吃藥":"takemed_0_0"
     ,"查詢":"查詢_0"
-    ,"拿藥":"拿藥_0"
-    ,"吃什麼藥":"吃什麼藥_0"
-    ,"吃藥紀錄":"吃藥紀錄_0"}
+    ,"拿藥":"showmap"
+    ,"吃什麼藥":"shownotify_0_0"
+    ,"吃藥紀錄":"showtakehistory"}
 
     if _msg in msgStatus:
         userstat.SetUserStatus(user_id,msgStatus[_msg],None)
@@ -132,8 +132,8 @@ def every_halfmin():
         for notify in notifyList:
             print(notify)
             notifyTime = nowTime.replace(hour=int(notify[4].split(":")[0]), minute=int(notify[4].split(":")[1]))
-            # 如果時間有到或超過就提醒該用戶一次（注意有爛死的500次推播限制大公司連個小Discord都比不上是怎？）
-            if nowTime >= notifyTime and notify[5] != nowDate:
+            # 如果時間有到或超過而且沒提醒過而且沒吃過藥就提醒該用戶一次（注意有爛死的500次推播限制大公司連個小Discord都比不上是怎？）
+            if nowTime >= notifyTime and notify[5] != nowDate and notify[6] != nowDate:
                 line_bot_api.push_message(notify[1], TextSendMessage(text=f"吃藥時間！({notify[4]})\n\n{notify[3]}"))
                 #　提醒過就把該提醒標記成有提醒過
                 db_manager.execute(f"Update Notify Set LastNotifyDate = '{nowDate}' Where ID = '{notify[0]}'")
