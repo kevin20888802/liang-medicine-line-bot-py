@@ -2,8 +2,7 @@ line-bot-sdk
 gunicorn==19.9.0
 numpy
 flask
-zbar-py
-pyzbar
+pyzbar==0.1.8
 Pillow
 psycopg2
 bs4
