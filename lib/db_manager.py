@@ -74,8 +74,13 @@ Create Table If Not Exists UserStatus
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             return conn
         else:
-            DATABASE_URL = os.popen('heroku config:get DATABASE_URL -a liang-medicine-line-bot').read()[:-1]
+            DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            print(DATABASE_URL)
+            cur = self.conn.cursor()
+            cur.execute('SELECT VERSION()')
+            results = cur.fetchall()
+            print("Database version : {0} ".format(results))
             conn.autocommit = True
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             return conn
