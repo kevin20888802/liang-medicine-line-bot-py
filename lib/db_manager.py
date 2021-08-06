@@ -87,6 +87,7 @@ class PostgresBaseManager:
     def executeFile(self,path):
         cur = self.conn.cursor()
         sql_file = open(path,'r',encoding="utf-8")
+        print("running sql file:" + path)
         cur.execute(sql_file.read())
         self.conn.commit()
     pass
