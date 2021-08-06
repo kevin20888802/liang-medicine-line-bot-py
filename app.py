@@ -26,7 +26,7 @@ from PIL import Image
 
 
 #------------------------------------------------
-local_test = True # 自己電腦上用ngrok測試=True ; 放到Heroku上=False
+local_test = False # 自己電腦上用ngrok測試=True ; 放到Heroku上=False
 #-------- Line Developer上面的bot密碼資訊 --------
 _token = "" 
 _secret = ""
