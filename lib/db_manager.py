@@ -54,6 +54,7 @@ class PostgresBaseManager:
     # 執行 sql 指令
     def execute(self,cmd):
         cur = self.conn.cursor()
+        cur.execute("set transaction read write;")
         cur.execute(cmd)
         self.conn.commit()
         if cmd.startswith("Select") and (cur.rowcount > 0):
@@ -69,6 +70,7 @@ class PostgresBaseManager:
     def executeFile(self,path):
         cur = self.conn.cursor()
         sql_file = open(path,'r',encoding="utf-8")
+        cur.execute("set transaction read write;")
         cur.execute(sql_file.read())
         self.conn.commit()
     pass
