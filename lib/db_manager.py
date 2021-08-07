@@ -93,6 +93,7 @@ Create Table If Not Exists UserStatus
         """
         :return: 測試是否可以連線到 Heroku Postgres SQL
         """
+        print("testing connection...")
         cur = self.conn.cursor()
         cur.execute('SELECT VERSION()')
         results = cur.fetchall()
