@@ -9,6 +9,9 @@ Create Table If Not Exists UserMedicine
     TakeAmount int
 );
 
+Alter Table UserMedicine Add Column IF NOT EXISTS MedType varchar(1024) Default('藥品');
+--Alter Table UserMedicine Alter Column MedType set default '藥品';
+
 -- 提醒時間表
 --Drop Table If Exists Notify;
 Create Table If Not Exists Notify 

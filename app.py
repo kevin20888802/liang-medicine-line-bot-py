@@ -53,7 +53,8 @@ from lib.db_manager import PostgresBaseManager as dbm
 db_manager = dbm(local_test)
 db_manager.connect()
 db_manager.testConnection()
-db_manager.execute(db_manager.setupSQLCMD)
+db_manager.executeFile("sql/setupAppDB.sql")
+#db_manager.execute(db_manager.setupSQLCMD)
 
 
 from lib.user_stat_manager import User_Status_Manager 
@@ -140,7 +141,13 @@ def every_halfmin():
             notifyTime = nowTime.replace(hour=int(notify[4].split(":")[0]), minute=int(notify[4].split(":")[1]))
             # 如果時間有到或超過而且沒提醒過而且沒吃過藥就提醒該用戶一次（注意有爛死的500次推播限制大公司連個小Discord都比不上是怎？）
             if nowTime >= notifyTime and notify[5] != nowDate and notify[6] != nowDate:
-                line_bot_api.push_message(notify[1], TextSendMessage(text=f"吃藥時間！({notify[4]})\n\n{notify[3]}"))
+                medicine_type = ""
+                medicine_find = db_manager.execute(f"Select MedType From UserMedicine Where UserID = '{notify[1]}' and MedicineName = '{notify[3]}'")
+                for mediType in medicine_find:
+                    medicine_type = mediType[0]
+                    break
+                pass
+                line_bot_api.push_message(notify[1], TextSendMessage(text=f"吃{medicine_type}時間！({notify[4]})\n\n{notify[3]}"))
                 #　提醒過就把該提醒標記成有提醒過
                 db_manager.execute(f"Update Notify Set LastNotifyDate = '{nowDate}' Where ID = '{notify[0]}'")
             pass

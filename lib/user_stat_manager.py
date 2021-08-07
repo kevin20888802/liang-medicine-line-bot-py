@@ -21,9 +21,12 @@ class User_Status_Manager:
         self.statActions = {
             "notify_0_0":notifyActs.notify_0_0,
             "notify_0_1":notifyActs.notify_0_1,
+            "notify_0_2":notifyActs.notify_0_2,
+            "notify_0_3":notifyActs.notify_0_3,
             "notify_1_0":notifyActs.notify_1_0,
             "notify_1_1":notifyActs.notify_1_1,
             "notify_2_1":notifyActs.notify_2_1,
+            "notify_2_3":notifyActs.notify_2_3,
             "notify_3_1":notifyActs.notify_3_1,
             "notify_4_1":notifyActs.notify_4_1,
             "takemed_0_0":takeMedActs.takemed_0_0,

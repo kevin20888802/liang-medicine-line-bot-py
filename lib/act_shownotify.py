@@ -20,9 +20,15 @@ class ShowNotifyActions:
 
         if userNotifyList != None:
             for notify in userNotifyList:
+                medicine_type = ""
+                medicine_find = self.db_manager.execute(f"Select MedType From UserMedicine Where UserID = '{notify[1]}' and MedicineName = '{notify[3]}'")
+                for mediType in medicine_find:
+                    medicine_type = mediType[0]
+                    break
+                pass
                 MedMenuItem = CarouselColumn(
                         thumbnail_image_url="https://i.imgur.com/YRGlJWm.png",
-                        title=f'{notify[3]}',
+                        title=f'{medicine_type}',
                         text=f'{notify[3]}({notify[4]})\n\n上次吃藥日期為{notify[6]}',
                         actions=[
                             PostbackTemplateAction(

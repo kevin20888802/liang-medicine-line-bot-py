@@ -14,7 +14,7 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, PostbackEvent, TextMessage, URIAction,PostbackTemplateAction, CarouselColumn,CarouselTemplate, TemplateSendMessage,)
 from linebot.models.send_messages import TextSendMessage
-
+from linebot.models.actions import CameraAction
 from bs4 import BeautifulSoup
 import requests
 request_headers={
@@ -32,7 +32,20 @@ class FindDrugActions:
     # 尋找藥物步驟 0 - 輸入藥品名稱
     def finddrug_0(self,event):
         user_id = event.source.user_id # 使用者的內部id
-        self.bot_api.reply_message(event.reply_token,TextSendMessage(text="請輸入藥品名稱"))
+        
+        theMenu = CarouselTemplate(columns=[])
+    
+        MenuItem_0 = CarouselColumn(
+                thumbnail_image_url="https://i.imgur.com/uMyD6TA.png",
+                title=f'藥名',
+                text=f'請問您要尋找的的藥是？請使用相機滑到最左邊的的文字辨識功能或者用畫面左下的鍵盤按鈕打字讓我看看！',
+                actions=[
+                    CameraAction(label="開啟相機")
+                ]
+            )
+        theMenu.columns.append(MenuItem_0)
+
+        self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="藥品名稱輸入\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
         self.userstat.SetUserStatus(user_id,"finddrug_1","")
     pass
 

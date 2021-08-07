@@ -23,9 +23,15 @@ class TakeMedicineActions:
             now_time_str = now_time.strftime("%Y/%m/%d")
             for notify in userNotifyList:
                 if notify[5] != notify[6] and notify[6] != now_time_str: # 如果上次提醒日期不等於吃藥日期並且吃藥日期不是今天就加入列表
+                    medicine_type = ""
+                    medicine_find = self.db_manager.execute(f"Select MedType From UserMedicine Where UserID = '{notify[1]}' and MedicineName = '{notify[3]}'")
+                    for mediType in medicine_find:
+                        medicine_type = mediType[0]
+                        break
+                    pass
                     MedMenuItem = CarouselColumn(
                             thumbnail_image_url="https://i.imgur.com/YRGlJWm.png",
-                            title=f'{notify[3]}',
+                            title=f'{medicine_type}',
                             text=f'{notify[3]}({notify[4]})\n\n上次吃藥日期為{notify[6]}',
                             actions=[
                                 PostbackTemplateAction(
