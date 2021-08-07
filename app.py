@@ -147,11 +147,11 @@ def every_halfmin():
         pass
     pass
 pass
+every_halfmin()
 
 # 開啟LineBot功能
 if __name__ == "__main__":
     #db_manager.executeFile("sql/setupAppDB.sql")
-    every_halfmin()
     app.run(port=environ.get("PORT", 5000))
     db_manager.disconnect()
 pass
