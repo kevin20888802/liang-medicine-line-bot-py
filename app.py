@@ -17,6 +17,7 @@ from linebot.models.send_messages import ImageSendMessage
 # 系統相關lib
 from threading import Timer, local
 import os
+from os import environ
 import io
 from datetime import datetime
 
@@ -151,6 +152,6 @@ if __name__ == "__main__":
     db_manager.execute(db_manager.setupSQLCMD)
     #db_manager.executeFile("sql/setupAppDB.sql")
     every_halfmin()
-    app.run()
+    app.run(port=environ.get("PORT", 5000))
     db_manager.disconnect()
 pass
