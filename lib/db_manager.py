@@ -76,11 +76,6 @@ Create Table If Not Exists UserStatus
         else:
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-            print(DATABASE_URL)
-            cur = conn.cursor()
-            cur.execute('SELECT VERSION()')
-            results = cur.fetchall()
-            print("Database version : {0} ".format(results))
             conn.autocommit = True
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             return conn
@@ -108,6 +103,7 @@ Create Table If Not Exists UserStatus
 
     # 執行 sql 指令
     def execute(self,cmd):
+        self.conn = self.connect()
         cur = self.conn.cursor()
         cur.execute(cmd)
         self.conn.commit()
@@ -122,6 +118,7 @@ Create Table If Not Exists UserStatus
 
     # 執行 sql 檔案
     def executeFile(self,path):
+        self.conn = self.connect()
         cur = self.conn.cursor()
         sql_file = open(path,'r',encoding="utf-8")
         print("running sql file:" + path)
