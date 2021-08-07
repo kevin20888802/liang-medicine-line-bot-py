@@ -39,6 +39,9 @@ class ShowNotifyActions:
                         ]
                     )
                 takeMedMenu.columns.append(MedMenuItem)
+                if len(takeMedMenu.columns) >= 10:
+                    break
+                pass
             pass
         pass
 
