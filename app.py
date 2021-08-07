@@ -51,6 +51,9 @@ handler = WebhookHandler(_secret)
 
 from lib.db_manager import PostgresBaseManager as dbm
 db_manager = dbm(local_test)
+db_manager.connect()
+db_manager.testConnection()
+db_manager.execute(db_manager.setupSQLCMD)
 
 
 from lib.user_stat_manager import User_Status_Manager 
@@ -147,9 +150,6 @@ pass
 
 # 開啟LineBot功能
 if __name__ == "__main__":
-    db_manager.connect()
-    db_manager.testConnection()
-    db_manager.execute(db_manager.setupSQLCMD)
     #db_manager.executeFile("sql/setupAppDB.sql")
     every_halfmin()
     app.run(port=environ.get("PORT", 5000))
