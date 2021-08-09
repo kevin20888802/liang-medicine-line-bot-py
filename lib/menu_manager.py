@@ -100,13 +100,9 @@ class Menu_Manager:
         if i_msg in menu_names:
             if menu_names[i_msg] in self.menu_ids:
                 self.line_bot_api.link_rich_menu_to_user(user_id, self.menu_ids[menu_names[i_msg]])
+                self.userstat.SetUserStatus(user_id,"","")
             pass
         pass
-    pass
-
-    def SwitchToMainMenu(self,event):
-        user_id = event.source.user_id # 使用者的內部id
-        self.line_bot_api.link_rich_menu_to_user(user_id, self.main_menu_id)
     pass
 
 pass
