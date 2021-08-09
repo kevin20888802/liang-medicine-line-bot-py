@@ -15,8 +15,12 @@ class Menu_Manager:
 
     def ClearMenus(self):
         rich_menu_list = self.line_bot_api.get_rich_menu_list()
-        for menuItem in rich_menu_list:
-            self.line_bot_api.delete_rich_menu(menuItem.as_json_dict()["richMenuId"])
+        try:
+            for menuItem in rich_menu_list:
+                self.line_bot_api.delete_rich_menu(menuItem.as_json_dict()["richMenuId"])
+            pass
+        except:
+            print("Problem when delete richmenu...")
         pass
     pass
 
