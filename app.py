@@ -56,9 +56,11 @@ db_manager.testConnection()
 db_manager.executeFile("sql/setupAppDB.sql")
 #db_manager.execute(db_manager.setupSQLCMD)
 
-
 from lib.user_stat_manager import User_Status_Manager 
 userstat = User_Status_Manager(db_manager,line_bot_api)
+
+from lib.menu_manager import Menu_Manager
+menu_manage = Menu_Manager(db_manager,line_bot_api,userstat)
 
 #------------------------------------------------
 
@@ -93,13 +95,18 @@ def handle_message_text(event):
     _msg = event.message.text # 傳入的訊息
     user_id = event.source.user_id # 使用者的內部id
 
+    menu_manage.SwitchMenuCheck(event)
+
     # 狀態對應表
     msgStatus = {"提醒":"notify_0_0"
     ,"吃藥":"takemed_0_0"
     ,"查詢":"finddrug_0"
     ,"拿藥":"showmap"
     ,"吃什麼藥":"shownotify_0_0"
-    ,"吃藥紀錄":"showtakehistory"}
+    ,"吃藥紀錄":"showtakehistory"
+    ,"線上預約":"showhospital"
+    ,"新增生理紀錄":"addhealthstat_0"
+    ,"查看生理紀錄":"showhealthstat_0"}
 
     if _msg in msgStatus:
         userstat.SetUserStatus(user_id,msgStatus[_msg],None)

@@ -43,3 +43,30 @@ Create Table If Not Exists UserStatus
     Stat varchar(1024),
     TempValue text
 );
+
+-- 使用者脈搏表
+Create Table If Not Exists UserHealth_Purse
+(
+    ID int GENERATED ALWAYS AS IDENTITY Primary Key,
+    UserID varchar(1024),
+    UpdateTime varchar(1024),
+    Stat float(8)
+);
+
+-- 使用者血壓表
+Create Table If Not Exists UserHealth_BloodPressure
+(
+    ID int GENERATED ALWAYS AS IDENTITY Primary Key,
+    UserID varchar(1024),
+    UpdateTime varchar(1024),
+    Stat float(8)
+);
+
+-- 使用者血糖表
+Create Table If Not Exists UserHealth_Glycemic
+(
+    ID int GENERATED ALWAYS AS IDENTITY Primary Key,
+    UserID varchar(1024),
+    UpdateTime varchar(1024),
+    Stat float(8)
+);

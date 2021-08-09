@@ -38,7 +38,7 @@ class FindDrugActions:
         MenuItem_0 = CarouselColumn(
                 thumbnail_image_url="https://i.imgur.com/uMyD6TA.png",
                 title=f'藥名',
-                text=f'請問您要尋找的的藥是？請使用相機滑到最左邊的的文字辨識功能或者用畫面左下的鍵盤按鈕打字讓我看看！',
+                text=f'請問您要尋找的的藥是？請使用相機滑到最左邊的文字辨識功能或者用畫面左下的鍵盤按鈕打字讓我看看！',
                 actions=[
                     CameraAction(label="開啟相機")
                 ]
