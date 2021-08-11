@@ -120,7 +120,7 @@ class Menu_Manager:
 
         if i_msg in menu_names:
             if menu_names[i_msg] in self.QuickReplyMenus:
-                self.line_bot_api.reply_message(event.reply_token,self.QuickReplyMenus[i_msg])
+                self.line_bot_api.reply_message(event.reply_token,self.QuickReplyMenus[menu_names[i_msg]])
                 #self.line_bot_api.link_rich_menu_to_user(user_id, self.menu_ids[menu_names[i_msg]])
                 self.userstat.SetUserStatus(user_id,"","")
             pass
