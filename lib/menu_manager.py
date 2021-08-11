@@ -3,6 +3,8 @@ from linebot.exceptions import LineBotApiError
 from linebot.models import RichMenu,RichMenuResponse,RichMenuArea,RichMenuBounds,RichMenuSize,MessageAction
 import json
 
+from linebot.models.actions import CameraAction
+
 class Menu_Manager:
 
     def __init__(self,DBmanager,botapi,userstats):
@@ -34,9 +36,12 @@ class Menu_Manager:
         name="main_menu",
         chat_bar_text="主頁",
         areas=[
-            RichMenuArea(bounds=RichMenuBounds(x=0, y=0, width=main_menu_size[0] / 3, height=main_menu_size[1]),action=MessageAction(label='act0', text='藥物選單')),
-            RichMenuArea(bounds=RichMenuBounds(x=834, y=0, width=main_menu_size[0] / 3, height=main_menu_size[1]),action=MessageAction(label='act1', text='生理紀錄')),
-            RichMenuArea(bounds=RichMenuBounds(x=1668, y=0, width=main_menu_size[0] / 3, height=main_menu_size[1]),action=MessageAction(label='act2', text='線上預約'))
+            RichMenuArea(bounds=RichMenuBounds(x=0, y=0, width=main_menu_size[0] / 3, height=main_menu_size[1] / 2),action=MessageAction(label='act0', text='藥物選單')),
+            RichMenuArea(bounds=RichMenuBounds(x=834, y=0, width=main_menu_size[0] / 3, height=main_menu_size[1] / 2),action=MessageAction(label='act1', text='生理紀錄')),
+            RichMenuArea(bounds=RichMenuBounds(x=1668, y=0, width=main_menu_size[0] / 3, height=main_menu_size[1] / 2),action=MessageAction(label='act2', text='線上預約')),
+            RichMenuArea(bounds=RichMenuBounds(x=0, y=843, width=main_menu_size[0] / 3, height=main_menu_size[1] / 2),action=MessageAction(label='act3', text='hi')),
+            RichMenuArea(bounds=RichMenuBounds(x=834, y=843, width=main_menu_size[0] / 3, height=main_menu_size[1] / 2),action=MessageAction(label='act4', text='hi')),
+            RichMenuArea(bounds=RichMenuBounds(x=1668, y=843, width=main_menu_size[0] / 3, height=main_menu_size[1] / 2),action=MessageAction(label='act5', text='掃描'))
             ])
         self.menu_ids["main_menu"] = self.line_bot_api.create_rich_menu(rich_menu=main_menu)
         with open("lib/MenuImg/richmenu_1628187718435_1.png", 'rb') as f:

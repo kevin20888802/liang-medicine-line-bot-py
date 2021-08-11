@@ -7,8 +7,8 @@ from .act_finddrug import FindDrugActions
 from .act_hospital import HospitalActions
 from .act_addhealthstat import AddHealthStatActions
 from .act_showhealthstat import ShowHealthStatActions
+from .act_showcamera import ShowCamera
 from .db_manager import PostgresBaseManager as dbm
-
 
 class User_Status_Manager:
 
@@ -24,6 +24,7 @@ class User_Status_Manager:
         hospitalActions = HospitalActions(DBmanager,botapi,self)
         addHealthStatActions = AddHealthStatActions(DBmanager,botapi,self)
         showHealthStatActions = ShowHealthStatActions(DBmanager,botapi,self)
+        showCamera = ShowCamera(DBmanager,botapi,self)
         self.statActions = {
             "notify_0_0":notifyActs.notify_0_0,
             "notify_0_1":notifyActs.notify_0_1,
@@ -48,7 +49,8 @@ class User_Status_Manager:
             "addhealthstat_1":addHealthStatActions.addhealthstat_1,
             "addhealthstat_2":addHealthStatActions.addhealthstat_2,
             "showhealthstat_0":showHealthStatActions.showhealthstat_0,
-            "showhealthstat_1":showHealthStatActions.showhealthstat_1
+            "showhealthstat_1":showHealthStatActions.showhealthstat_1,
+            "showcamera":showCamera.showcamera
         }
     pass
 

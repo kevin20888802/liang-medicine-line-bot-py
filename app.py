@@ -16,6 +16,7 @@ from linebot.models.send_messages import ImageSendMessage
 
 # 系統相關lib
 from threading import Timer, local
+import tempfile
 import os
 from os import environ
 import io
@@ -106,7 +107,8 @@ def handle_message_text(event):
     ,"吃藥紀錄":"showtakehistory"
     ,"線上預約":"showhospital"
     ,"新增生理紀錄":"addhealthstat_0"
-    ,"查看生理紀錄":"showhealthstat_0"}
+    ,"查看生理紀錄":"showhealthstat_0"
+    ,"掃描":"showcamera"}
 
     if _msg in msgStatus:
         userstat.SetUserStatus(user_id,msgStatus[_msg],None)
@@ -119,20 +121,49 @@ pass
 # 當圖片訊息傳入
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_text(event):
+
+    user_id = event.source.user_id # 使用者的內部id
+
     # 取得圖片訊息(byte)並轉換成圖片形式(image)
-    value = bytearray()
     message_content = line_bot_api.get_message_content(event.message.id)
-    for chunk in message_content.iter_content():
-        value += chunk
+    with tempfile.TemporaryFile() as tmp:
+        for chunk in message_content.iter_content():
+            tmp.write(chunk)
+        img = Image.open(tmp)
+        o_msg = ""
+
+        # QR Code 資訊
+        QRText = decode(image=img)
+        print(f"Decoding QR Code:\n----------------\n{QRText[0].data}\n----------------\n")
+
+        QRData = QRText[0].data.decode("utf-8").split("\n")
+        print(QRData)
+        if QRData[0] == "QR新增提醒":
+            o_msg += "已新增提醒:\n"
+            for i in range(2,len(QRData)):
+                #名稱,類型,數量,服用,時間
+                NotifyData = QRData[i].split(",")
+                _notifyName = NotifyData[0]
+                _notifyType = NotifyData[1]
+                _notifyAmount = NotifyData[2]
+                _notifyTake = NotifyData[3]
+                _notifyTime = NotifyData[4]
+                
+                # 在使用者藥品表增加使用者的藥名如果沒有的話 (數量先設定為0如果是新的藥品)
+                findCount = db_manager.execute(f"Select Count(*) From UserMedicine Where UserID = '{user_id}' and MedicineName = '{_notifyName}'") 
+                if findCount == None or findCount[0][0] <= 0:
+                    db_manager.execute(f"Insert Into UserMedicine(UserID,MedicineName,Amount,TakeAmount) Values('{user_id}','{_notifyName}',0,1)")
+                pass
+                db_manager.execute(f"Update UserMedicine Set MedType = '{_notifyType}', Amount = {_notifyAmount}, TakeAmount = {_notifyTake} Where UserID = '{user_id}' and MedicineName = '{_notifyName}'")
+                db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{_notifyName}','{_notifyTime}','','尚未吃過藥')")
+                o_msg += f"{_notifyTime} - [{_notifyType}]{_notifyName}\n(單次服用數量:{_notifyTake}/剩餘數量:{_notifyAmount})\n"
+            pass
+        pass
+        #　回應
+        if o_msg != "":
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=o_msg))
+        pass
     pass
-    
-    img = Image.open(io.BytesIO(value))
-
-    # QR Code 資訊
-    print(decode(img))
-
-    #　回應
-    #line_bot_api.reply_message(event.reply_token,ImageSendMessage(original_content_url=_oriImgUrl,preview_image_url=_preImgUrl))
 pass
 
 # 每半分鐘執行的放這
