@@ -4,6 +4,7 @@ from linebot.models import RichMenu,RichMenuResponse,RichMenuArea,RichMenuBounds
 import json
 
 from linebot.models.actions import CameraAction
+from linebot.models.send_messages import QuickReply, QuickReplyButton, TextSendMessage
 
 class Menu_Manager:
 
@@ -12,6 +13,7 @@ class Menu_Manager:
         self.line_bot_api = botapi
         self.userstat = userstats
         self.menu_ids = {}
+        self.QuickReplyMenus = {}
         self.SetupMenus()
     pass
 
@@ -62,10 +64,18 @@ class Menu_Manager:
             RichMenuArea(bounds=RichMenuBounds(x=834, y=843, width=drug_menu_size[0] / 3, height=drug_menu_size[1] / 2),action=MessageAction(label='act4', text='吃藥紀錄')),
             RichMenuArea(bounds=RichMenuBounds(x=1668, y=843, width=drug_menu_size[0] / 3, height=drug_menu_size[1] / 2),action=MessageAction(label='act5', text='主選單'))
             ])
-        self.menu_ids["drug_menu"] = self.line_bot_api.create_rich_menu(rich_menu=drug_menu)
+        #self.menu_ids["drug_menu"] = self.line_bot_api.create_rich_menu(rich_menu=drug_menu)
         with open("lib/MenuImg/richmenu_1628187718435.png", 'rb') as f:
-            self.line_bot_api.set_rich_menu_image(self.menu_ids["drug_menu"], "image/png", f)
+            #self.line_bot_api.set_rich_menu_image(self.menu_ids["drug_menu"], "image/png", f)
+            pass
         pass
+        self.QuickReplyMenus["drug_menu"] = QuickReply(items=[
+                    QuickReplyButton(action=MessageAction(label="新的藥物",text="提醒")),
+                    QuickReplyButton(action=MessageAction(label="吃藥",text="吃藥")),
+                    QuickReplyButton(action=MessageAction(label="藥物查詢",text="查詢")),
+                    QuickReplyButton(action=MessageAction(label="吃什麼藥",text="吃什麼藥")),
+                    QuickReplyButton(action=MessageAction(label="吃藥紀錄",text="吃藥紀錄"))
+                ])
 
 
         health_menu_size = [2500,1686]
@@ -79,10 +89,16 @@ class Menu_Manager:
             RichMenuArea(bounds=RichMenuBounds(x=834, y=0, width=health_menu_size[0] / 3, height=health_menu_size[1]),action=MessageAction(label='act1', text='查看生理紀錄')),
             RichMenuArea(bounds=RichMenuBounds(x=1668, y=0, width=health_menu_size[0] / 3, height=health_menu_size[1]),action=MessageAction(label='act2', text='主選單'))
             ])
-        self.menu_ids["health_menu"] = self.line_bot_api.create_rich_menu(rich_menu=health_menu)
+        #self.menu_ids["health_menu"] = self.line_bot_api.create_rich_menu(rich_menu=health_menu)
         with open("lib/MenuImg/richmenu_1628187718435_2.png", 'rb') as f:
-            self.line_bot_api.set_rich_menu_image(self.menu_ids["health_menu"], "image/png", f)
+            #self.line_bot_api.set_rich_menu_image(self.menu_ids["health_menu"], "image/png", f)
+            pass
         pass
+        self.QuickReplyMenus["health_menu"] = QuickReply(items=[
+                    QuickReplyButton(action=MessageAction(label="新的藥物",text="新增生理紀錄")),
+                    QuickReplyButton(action=MessageAction(label="吃藥",text="查看生理紀錄")),
+                    QuickReplyButton(action=MessageAction(label="藥物查詢",text="主選單"))
+                ])
 
         with open('menu_id.json', 'w') as f:
             json.dump(self.menu_ids, f)
@@ -103,7 +119,13 @@ class Menu_Manager:
         pass  
 
         if i_msg in menu_names:
+            if menu_names[i_msg] in self.QuickReplyMenus:
+                self.bot_api.reply_message(event.reply_token,self.QuickReplyMenus[i_msg])
+                #self.line_bot_api.link_rich_menu_to_user(user_id, self.menu_ids[menu_names[i_msg]])
+                self.userstat.SetUserStatus(user_id,"","")
+            pass
             if menu_names[i_msg] in self.menu_ids:
+                #self.bot_api.reply_message(event.reply_token,self.QuickReplyMenus[i_msg])
                 self.line_bot_api.link_rich_menu_to_user(user_id, self.menu_ids[menu_names[i_msg]])
                 self.userstat.SetUserStatus(user_id,"","")
             pass
