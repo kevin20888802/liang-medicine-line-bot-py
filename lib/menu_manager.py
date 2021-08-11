@@ -73,8 +73,7 @@ class Menu_Manager:
                     QuickReplyButton(action=MessageAction(label="新的藥物",text="提醒")),
                     QuickReplyButton(action=MessageAction(label="吃藥",text="吃藥")),
                     QuickReplyButton(action=MessageAction(label="藥物查詢",text="查詢")),
-                    QuickReplyButton(action=MessageAction(label="吃什麼藥",text="吃什麼藥")),
-                    QuickReplyButton(action=MessageAction(label="吃藥紀錄",text="吃藥紀錄"))
+                    QuickReplyButton(action=MessageAction(label="吃什麼藥",text="吃什麼藥"))
                 ])
 
 
@@ -97,7 +96,8 @@ class Menu_Manager:
         self.QuickReplyMenus["health_menu"] = QuickReply(items=[
                     QuickReplyButton(action=MessageAction(label="新的藥物",text="新增生理紀錄")),
                     QuickReplyButton(action=MessageAction(label="吃藥",text="查看生理紀錄")),
-                    QuickReplyButton(action=MessageAction(label="藥物查詢",text="主選單"))
+                    QuickReplyButton(action=MessageAction(label="藥物查詢",text="主選單")),
+                    QuickReplyButton(action=MessageAction(label="吃藥紀錄",text="吃藥紀錄"))
                 ])
 
         with open('menu_id.json', 'w') as f:
