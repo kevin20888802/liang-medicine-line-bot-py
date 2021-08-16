@@ -34,8 +34,8 @@ class NotifyActions:
         o_qr.make(fit=True)
         o_img = o_qr.make_image(fill_color="black", back_color= "white")
         _timestr = datetime.now().strftime("%Y-%m-%d")
-        now_dir = pathlib.Path().resolve()
-        PATH = f"{now_dir}/tmp/takeqr_{_timestr}_{medcineName}.png"
+        #now_dir = pathlib.Path().resolve()
+        PATH = f"./tmp/takeqr_{_timestr}_{medcineName}.png"
         o_img.save(PATH)
         CLIENT_ID = "18290f38ca7a80f"
         im = pyimgur.Imgur(CLIENT_ID)
