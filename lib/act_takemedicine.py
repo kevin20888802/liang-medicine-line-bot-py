@@ -70,6 +70,15 @@ class TakeMedicineActions:
             return
         pass
         selected_notify_id = event.postback.data
+        self.TakeMed(event,user_id,selected_notify_id)
+    pass
+
+    def TakeMed(self,event,user_id,selected_notify_id):
+
+        now_time = datetime.now()
+        now_time_str = now_time.strftime("%Y/%m/%d")
+
+        # 選定的提醒id
         notifyList = self.db_manager.execute(f"Select * From Notify Where UserID = '{user_id}' and ID = '{selected_notify_id}'")
         history_str = ""
         target_med = ""
@@ -116,5 +125,4 @@ class TakeMedicineActions:
         # reply msg
         self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"已紀錄吃藥：\n{history_str} \n剩餘藥品數量：{medicine_left}"))
     pass
-
 pass

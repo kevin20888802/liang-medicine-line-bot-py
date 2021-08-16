@@ -15,42 +15,42 @@ class User_Status_Manager:
     def __init__(self,DBmanager,botapi):
         self.db_manager = DBmanager
         self.line_bot_api = botapi
-        notifyActs = NotifyActions(DBmanager,botapi,self)
-        takeMedActs = TakeMedicineActions(DBmanager,botapi,self)
-        showtakeActs = ShowTakeActions(DBmanager,botapi,self)
-        showNotifyActions = ShowNotifyActions(DBmanager,botapi,self)
-        showMapActions = ShowMapActions(DBmanager,botapi,self)
-        findDrugActions = FindDrugActions(DBmanager,botapi,self)
-        hospitalActions = HospitalActions(DBmanager,botapi,self)
-        addHealthStatActions = AddHealthStatActions(DBmanager,botapi,self)
-        showHealthStatActions = ShowHealthStatActions(DBmanager,botapi,self)
-        showCamera = ShowCamera(DBmanager,botapi,self)
+        self.notifyActs = NotifyActions(DBmanager,botapi,self)
+        self.takeMedActs = TakeMedicineActions(DBmanager,botapi,self)
+        self.showtakeActs = ShowTakeActions(DBmanager,botapi,self)
+        self.showNotifyActions = ShowNotifyActions(DBmanager,botapi,self)
+        self.showMapActions = ShowMapActions(DBmanager,botapi,self)
+        self.findDrugActions = FindDrugActions(DBmanager,botapi,self)
+        self.hospitalActions = HospitalActions(DBmanager,botapi,self)
+        self.addHealthStatActions = AddHealthStatActions(DBmanager,botapi,self)
+        self.showHealthStatActions = ShowHealthStatActions(DBmanager,botapi,self)
+        self.showCamera = ShowCamera(DBmanager,botapi,self)
         self.statActions = {
-            "notify_0_0":notifyActs.notify_0_0,
-            "notify_0_1":notifyActs.notify_0_1,
-            "notify_0_2":notifyActs.notify_0_2,
-            "notify_0_3":notifyActs.notify_0_3,
-            "notify_1_0":notifyActs.notify_1_0,
-            "notify_1_1":notifyActs.notify_1_1,
-            "notify_2_1":notifyActs.notify_2_1,
-            "notify_2_3":notifyActs.notify_2_3,
-            "notify_3_1":notifyActs.notify_3_1,
-            "notify_4_1":notifyActs.notify_4_1,
-            "takemed_0_0":takeMedActs.takemed_0_0,
-            "takemed_0_1":takeMedActs.takemed_0_1,
-            "showtakehistory":showtakeActs.showtakehistory,
-            "shownotify_0_0":showNotifyActions.shownotify_0_0,
-            "shownotify_0_1":showNotifyActions.shownotify_0_1,
-            "showmap":showMapActions.showmap,
-            "finddrug_0":findDrugActions.finddrug_0,
-            "finddrug_1":findDrugActions.finddrug_1,
-            "showhospital":hospitalActions.ShowHospital,
-            "addhealthstat_0":addHealthStatActions.addhealthstat_0,
-            "addhealthstat_1":addHealthStatActions.addhealthstat_1,
-            "addhealthstat_2":addHealthStatActions.addhealthstat_2,
-            "showhealthstat_0":showHealthStatActions.showhealthstat_0,
-            "showhealthstat_1":showHealthStatActions.showhealthstat_1,
-            "showcamera":showCamera.showcamera
+            "notify_0_0":self.notifyActs.notify_0_0,
+            "notify_0_1":self.notifyActs.notify_0_1,
+            "notify_0_2":self.notifyActs.notify_0_2,
+            "notify_0_3":self.notifyActs.notify_0_3,
+            "notify_1_0":self.notifyActs.notify_1_0,
+            "notify_1_1":self.notifyActs.notify_1_1,
+            "notify_2_1":self.notifyActs.notify_2_1,
+            "notify_2_3":self.notifyActs.notify_2_3,
+            "notify_3_1":self.notifyActs.notify_3_1,
+            "notify_4_1":self.notifyActs.notify_4_1,
+            "takemed_0_0":self.takeMedActs.takemed_0_0,
+            "takemed_0_1":self.takeMedActs.takemed_0_1,
+            "showtakehistory":self.showtakeActs.showtakehistory,
+            "shownotify_0_0":self.showNotifyActions.shownotify_0_0,
+            "shownotify_0_1":self.showNotifyActions.shownotify_0_1,
+            "showmap":self.showMapActions.showmap,
+            "finddrug_0":self.findDrugActions.finddrug_0,
+            "finddrug_1":self.findDrugActions.finddrug_1,
+            "showhospital":self.hospitalActions.ShowHospital,
+            "addhealthstat_0":self.addHealthStatActions.addhealthstat_0,
+            "addhealthstat_1":self.addHealthStatActions.addhealthstat_1,
+            "addhealthstat_2":self.addHealthStatActions.addhealthstat_2,
+            "showhealthstat_0":self.showHealthStatActions.showhealthstat_0,
+            "showhealthstat_1":self.showHealthStatActions.showhealthstat_1,
+            "showcamera":self.showCamera.showcamera
         }
     pass
 

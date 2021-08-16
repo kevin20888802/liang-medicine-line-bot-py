@@ -1,8 +1,17 @@
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, PostbackEvent, TextMessage, URIAction,PostbackTemplateAction, CarouselColumn,CarouselTemplate, TemplateSendMessage,)
-from linebot.models.send_messages import TextSendMessage
+from linebot.models.send_messages import ImageSendMessage, TextSendMessage
 from linebot.models.actions import CameraAction, MessageAction, PostbackAction
+
+import datetime as dt
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import matplotlib.ticker as ticker
+import pyimgur
+import os
+import pathlib
+from pylab import mpl
 
 class ShowHealthStatActions:
 
@@ -45,15 +54,35 @@ class ShowHealthStatActions:
         }
         if typeName in tableName:
             result = self.db_manager.execute(f"Select * From {tableName[typeName]} Where UserID = '{user_id}'")
+            dates = []
+            health_values = []
             if result != None:
                 for row in result:
                     _msg += f"{row[2]} : {row[3]}\n"
+                    dates.append(row[2])
+                    health_values.append(row[3])
                 pass
             pass
             if _msg == "":
                 _msg = "尚無任何紀錄"
             pass
-            self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"以下是您的{typeName}紀錄\n\n{_msg}"))
+            #dates = ['01/02/1991','01/03/1991','01/04/1991']
+            x = [dt.datetime.strptime(d,'%Y/%m/%d %H:%M:%S') for d in dates]
+            y = health_values
+            mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei'] # 指定默认字体
+            mpl.rcParams['axes.unicode_minus'] = False # 解决保存图像是负号'-'显示为方块的问题
+            plt.plot_date(x,y,linestyle ='solid')
+            plt.title(typeName,fontsize=30)
+            now_dir = pathlib.Path().resolve()
+            PATH = f"{now_dir}/tmp/healthstat_{user_id}.png"
+            plt.savefig(PATH)
+            CLIENT_ID = "18290f38ca7a80f"
+            im = pyimgur.Imgur(CLIENT_ID)
+            uploaded_image = im.upload_image(PATH, title="HealthStat with PyImgur")
+            img_link = uploaded_image.link
+            os.remove(PATH)
+            self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"以下是您的{typeName}紀錄\n\n{_msg}"),
+            ImageSendMessage(original_content_url=img_link,preview_image_url=img_link)])
             self.userstat.SetUserStatus(user_id,"","")
         else:
             self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"奇怪...對不起我找不到紀錄表沒辦法給你看看"))

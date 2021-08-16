@@ -26,7 +26,6 @@ from datetime import datetime
 from pyzbar.pyzbar import decode
 from PIL import Image
 
-
 #------------------------------------------------
 local_test = False # 自己電腦上用ngrok測試=True ; 放到Heroku上=False
 #-------- Line Developer上面的bot密碼資訊 --------
@@ -158,6 +157,19 @@ def handle_image_text(event):
                 db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{_notifyName}','{_notifyTime}','','尚未吃過藥')")
                 o_msg += f"{_notifyTime} - [{_notifyType}]{_notifyName}\n(單次服用數量:{_notifyTake}/剩餘數量:{_notifyAmount})\n"
             pass
+        pass
+        if QRData[0] == "吃藥":
+        # 選定的提醒id
+            TakeData = QRData[1].split(",")
+            notifyList = userstat.takeMedActs.db_manager.execute(f"Select * From Notify Where UserID='{user_id}' and TargetMedicine='{TakeData[0]}' and TargetTime ='{TakeData[1]}'")
+            notifyID = ""
+            if notifyList != None:
+                for notify in notifyList:
+                    notifyID = notify[0]
+                    break
+                pass
+            pass
+            userstat.takeMedActs.TakeMed(event,user_id,notifyID)
         pass
         #　回應
         if o_msg != "":

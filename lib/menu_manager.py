@@ -94,10 +94,9 @@ class Menu_Manager:
             pass
         pass
         self.QuickReplyMenus["health_menu"] = QuickReply(items=[
-                    QuickReplyButton(action=MessageAction(label="新的藥物",text="新增生理紀錄")),
-                    QuickReplyButton(action=MessageAction(label="吃藥",text="查看生理紀錄")),
-                    QuickReplyButton(action=MessageAction(label="藥物查詢",text="主選單")),
-                    QuickReplyButton(action=MessageAction(label="吃藥紀錄",text="吃藥紀錄"))
+                    QuickReplyButton(action=MessageAction(label="新增生理紀錄",text="新增生理紀錄")),
+                    QuickReplyButton(action=MessageAction(label="查看生理紀錄",text="查看生理紀錄")),
+                    QuickReplyButton(action=MessageAction(label="主選單",text="主選單"))
                 ])
 
         with open('menu_id.json', 'w') as f:

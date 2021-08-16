@@ -3,6 +3,16 @@ from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, PostbackEvent, TextMessage,MessageAction,PostbackTemplateAction, TextSendMessage,TemplateSendMessage, ButtonsTemplate, DatetimePickerTemplateAction,CarouselColumn,CarouselTemplate,)
 from linebot.models.actions import CameraAction
 from linebot.models.messages import Message
+from linebot.models.send_messages import ImageSendMessage
+
+# 圖片相關lib
+import qrcode
+import pyimgur
+from PIL import Image
+
+from datetime import datetime
+import os
+import pathlib
 
 class NotifyActions:
 
@@ -10,6 +20,29 @@ class NotifyActions:
         self.db_manager = DBmanager
         self.bot_api = botapi
         self.userstat = userstats
+    pass
+
+    def AddNotify(self,user_id,theName,_t):
+        self.db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{theName}','{_t}','','尚未吃過藥')")
+    pass
+
+    def GenerateTakeQR(self,medcineName,_t):
+        # QR Data = "吃藥\ntheName,_t"
+        o_qr = qrcode.QRCode(version =1,box_size =10,border=6)
+        o_data = f"吃藥\n{medcineName},{_t}"
+        o_qr.add_data(o_data)
+        o_qr.make(fit=True)
+        o_img = o_qr.make_image(fill_color="black", back_color= "white")
+        _timestr = datetime.now().strftime("%Y-%m-%d")
+        now_dir = pathlib.Path().resolve()
+        PATH = f"{now_dir}/tmp/takeqr_{_timestr}_{medcineName}.png"
+        o_img.save(PATH)
+        CLIENT_ID = "18290f38ca7a80f"
+        im = pyimgur.Imgur(CLIENT_ID)
+        uploaded_image = im.upload_image(PATH, title="TakeMedcine with PyImgur")
+        os.remove(PATH)
+        return uploaded_image.link_big_square
+        #print(uploaded_image.link)
     pass
 
     # 提醒步驟 0-0 - 詢問藥名
@@ -174,27 +207,38 @@ class NotifyActions:
         _msg = event.message.text # 傳入的訊息
         user_id = event.source.user_id # 使用者的內部id
         theName = self.userstat.GetUserTmpValue(user_id)
+        qr_urls = []
         if _msg == "三餐飯前": # 三餐飯前（6:30,11:30,17:30)
             notify_times = {"06:30","11:30","17:30"}
             for _t in notify_times:
-                self.db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{theName}','{_t}','','尚未吃過藥')")
+                self.AddNotify(user_id,theName,_t)
+                qr_urls.append(self.GenerateTakeQR(theName,_t))
             pass
             self.userstat.SetUserStatus(user_id,"","")
-            self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"吃藥時間：{_msg}\n設定完成。"))
+            self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"吃藥時間：{_msg}\n設定完成。")
+            ,ImageSendMessage(original_content_url=qr_urls[0],preview_image_url=qr_urls[0])
+            ,ImageSendMessage(original_content_url=qr_urls[1],preview_image_url=qr_urls[1])
+            ,ImageSendMessage(original_content_url=qr_urls[2],preview_image_url=qr_urls[2])])
         elif _msg == "三餐飯後": # 三餐飯後（7:50,13:20,19:00）
             notify_times = {"07:50","13:20","19:00"}
             for _t in notify_times:
-                self.db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{theName}','{_t}','','尚未吃過藥')")
+                self.AddNotify(user_id,theName,_t)
             pass
             self.userstat.SetUserStatus(user_id,"","")
-            self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"吃藥時間：{_msg}\n設定完成。"))
+            self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"吃藥時間：{_msg}\n設定完成。")
+            ,ImageSendMessage(original_content_url=qr_urls[0],preview_image_url=qr_urls[0])
+            ,ImageSendMessage(original_content_url=qr_urls[1],preview_image_url=qr_urls[1])
+            ,ImageSendMessage(original_content_url=qr_urls[2],preview_image_url=qr_urls[2])])
         elif _msg == "睡前": # 睡前 (21:00)
             notify_times = {"21:00"}
             for _t in notify_times:
-                self.db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{theName}','{_t}','','尚未吃過藥')")
+                self.AddNotify(user_id,theName,_t)
             pass
             self.userstat.SetUserStatus(user_id,"","")
-            self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"吃藥時間：{_msg}\n設定完成。"))
+            self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"吃藥時間：{_msg}\n設定完成。")
+            ,ImageSendMessage(original_content_url=qr_urls[0],preview_image_url=qr_urls[0])
+            ,ImageSendMessage(original_content_url=qr_urls[1],preview_image_url=qr_urls[1])
+            ,ImageSendMessage(original_content_url=qr_urls[2],preview_image_url=qr_urls[2])])
         else: # 自訂            
             self.notify_3_0(event)
             self.userstat.SetUserStatus(user_id,"notify_3_1",theName)
@@ -258,14 +302,16 @@ class NotifyActions:
 
         # 上次設定的時間
         notify_time = event.postback.params['time']
-        self.db_manager.execute(f"Insert Into Notify(UserID,Description,TargetMedicine,TargetTime,LastNotifyDate,TakeDate) Values('{user_id}','','{theName}','{notify_time}','','尚未吃過藥')")
+        self.AddNotify(user_id,theName,notify_time)
+        qr_url = self.GenerateTakeQR(theName,notify_time)
 
         if now_set_times <= target_set_times:
             self.userstat.SetUserStatus(user_id,"notify_4_1",f"{theName};{target_set_times};{now_set_times}")
+            self.bot_api.reply_message(event.reply_token,ImageSendMessage(original_content_url=qr_url,preview_image_url=qr_url))
             self.notify_4_0(event)
         else:
             self.userstat.SetUserStatus(user_id,"","")
-            self.bot_api.reply_message(event.reply_token,TextSendMessage(text="設定完成。"))
+            self.bot_api.reply_message(event.reply_token,[TextSendMessage(text="設定完成。"),ImageSendMessage(original_content_url=qr_url,preview_image_url=qr_url)])
         pass
     pass
 

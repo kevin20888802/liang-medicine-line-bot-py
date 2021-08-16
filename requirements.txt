@@ -7,3 +7,5 @@ Pillow
 psycopg2
 bs4
 requests
+matplotlib
+pyimgur
