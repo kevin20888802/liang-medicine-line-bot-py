@@ -69,7 +69,7 @@ class ShowHealthStatActions:
             #dates = ['01/02/1991','01/03/1991','01/04/1991']
             x = [dt.datetime.strptime(d,'%Y/%m/%d %H:%M:%S') for d in dates]
             y = health_values
-            mpl.rcParams['font.sans-serif'] = ['Microsoft YaHei'] # 指定默认字体
+            mpl.rcParams['font.sans-serif'] = ['PMingLiU'] # 指定默认字体
             mpl.rcParams['axes.unicode_minus'] = False # 解决保存图像是负号'-'显示为方块的问题
             plt.plot_date(x,y,linestyle ='solid')
             plt.title(typeName,fontsize=30)
