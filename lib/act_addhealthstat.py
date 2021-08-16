@@ -24,7 +24,7 @@ class AddHealthStatActions:
                 text=f'請問要記錄的是什麼數值？',
                 actions=[
                     MessageAction(label="脈搏",text="脈搏"),
-                    MessageAction(label="血壓",text="脈搏"),
+                    MessageAction(label="血壓",text="血壓"),
                     MessageAction(label="血糖",text="血糖")
                 ]
             )
