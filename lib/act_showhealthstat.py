@@ -74,7 +74,7 @@ class ShowHealthStatActions:
             plt.plot_date(x,y,linestyle ='solid')
             plt.title(typeName,fontsize=30)
             #now_dir = os.getcwd()
-            PATH = f"./tmp/healthstat_{user_id}.png"
+            PATH = f"healthstat_{user_id}.png"
             plt.savefig(PATH)
             CLIENT_ID = "18290f38ca7a80f"
             im = pyimgur.Imgur(CLIENT_ID)
