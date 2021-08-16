@@ -73,7 +73,7 @@ class ShowHealthStatActions:
             mpl.rcParams['axes.unicode_minus'] = False # 解决保存图像是负号'-'显示为方块的问题
             plt.plot_date(x,y,linestyle ='solid')
             plt.title(typeName,fontsize=30)
-            now_dir = pathlib.Path().resolve()
+            now_dir = os.getcwd()
             PATH = f"{now_dir}/tmp/healthstat_{user_id}.png"
             plt.savefig(PATH)
             CLIENT_ID = "18290f38ca7a80f"
