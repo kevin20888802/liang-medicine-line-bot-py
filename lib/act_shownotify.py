@@ -74,7 +74,7 @@ class ShowNotifyActions:
             _msg += f"{input_datas[2]}"
             _msg += "剩餘藥量"
             _msg += "\n" + self.ProgressBarStr(int(input_datas[3]),100,length=10)
-            _msg += f"剩下:{input_datas[3]}"
+            _msg += f"\n剩下:{input_datas[3]}"
         pass
 
         # reply msg
