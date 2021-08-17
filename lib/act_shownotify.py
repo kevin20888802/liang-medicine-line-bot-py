@@ -1,6 +1,6 @@
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
-from linebot.models import (MessageEvent, PostbackEvent, TextMessage, TextSendMessage ,PostbackTemplateAction, CarouselColumn,CarouselTemplate, TemplateSendMessage,)
+from linebot.models import (MessageEvent, PostbackEvent,FlexSendMessage, TextMessage, TextSendMessage ,PostbackTemplateAction, CarouselColumn,CarouselTemplate, TemplateSendMessage,)
 
 from datetime import datetime
 import json 
@@ -81,7 +81,8 @@ class ShowNotifyActions:
                 progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = f"剩下{input_datas[3]}個"
                 progess_msg['body']['contents'][0]['contents'][1]['text'] = f"{float(input_datas[3]) / 100.0}%"
                 progess_msg['body']['contents'][1]['width'] = f"{float(input_datas[3]) / 100.0}%"
-                self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{_msg}"))
+                self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"{_msg}")
+                ,FlexSendMessage(alt_text="藥量顯示",contents=progess_msg)])
             pass
         pass
 
