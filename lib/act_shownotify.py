@@ -97,7 +97,7 @@ class ShowNotifyActions:
         percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
         filledLength = int(length * iteration // total)
         bar = fill * filledLength + '-' * (length - filledLength)
-        o_str = f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd
+        o_str = f'\r{prefix} |{bar}| {percent}% {suffix}'
         return o_str
     pass
 
