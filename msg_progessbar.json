@@ -80,21 +80,14 @@
               "contents": [
                 {
                   "type": "text",
-                  "text": "累計文章：95",
+                  "text": "剩餘藥量",
                   "margin": "lg",
                   "size": "sm",
                   "color": "#ffffffde"
                 },
                 {
                   "type": "text",
-                  "text": "團隊人數：7人",
-                  "margin": "lg",
-                  "size": "sm",
-                  "color": "#ffffffde"
-                },
-                {
-                  "type": "text",
-                  "text": "團隊狀態：挑戰中",
+                  "text": "ーーーーーー",
                   "margin": "lg",
                   "size": "sm",
                   "color": "#ffffffde"
