@@ -82,7 +82,7 @@ class ShowNotifyActions:
     pass
 
     # Print iterations progress
-    def ProgressBarStr (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    def ProgressBarStr (self,iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
         """
         Call in a loop to create terminal progress bar
         @params:
