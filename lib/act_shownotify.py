@@ -3,6 +3,7 @@ from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, PostbackEvent, TextMessage, TextSendMessage ,PostbackTemplateAction, CarouselColumn,CarouselTemplate, TemplateSendMessage,)
 
 from datetime import datetime
+import json 
 
 class ShowNotifyActions:
 
@@ -70,15 +71,21 @@ class ShowNotifyActions:
         if theAct == "delete":
             _msg += "已刪除提醒"
             self.db_manager.execute(f"Delete From Notify Where UserID = '{user_id}' and ID = '{selected_notify_id}'")
+            self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{_msg}"))
         elif theAct == "amount":
             _msg += f"{input_datas[2]}"
             _msg += "剩餘藥量"
-            _msg += "\n" + self.ProgressBarStr(int(input_datas[3]),100,length=10)
-            _msg += f"\n剩下:{input_datas[3]}"
+            with open('msg_progessbar.json', 'r') as f:
+                progess_msg = json.load(f)
+                progess_msg['body']['contents'][0]['contents'][0]['contents'][0]['text'] = f"{input_datas[2]}"
+                progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = f"剩下{input_datas[3]}個"
+                progess_msg['body']['contents'][0]['contents'][1]['text'] = f"{float(input_datas[3]) / 100.0}%"
+                progess_msg['body']['contents'][1]['width'] = f"{float(input_datas[3]) / 100.0}%"
+                self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{_msg}"))
+            pass
         pass
 
         # reply msg
-        self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{_msg}"))
     pass
 
     # Print iterations progress
