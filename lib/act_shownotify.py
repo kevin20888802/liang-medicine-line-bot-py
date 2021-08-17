@@ -20,10 +20,14 @@ class ShowNotifyActions:
 
         if userNotifyList != None:
             for notify in userNotifyList:
+                medcine_name = ""
                 medicine_type = ""
-                medicine_find = self.db_manager.execute(f"Select MedType From UserMedicine Where UserID = '{notify[1]}' and MedicineName = '{notify[3]}'")
-                for mediType in medicine_find:
-                    medicine_type = mediType[0]
+                medicine_find = self.db_manager.execute(f"Select * From UserMedicine Where UserID = '{notify[1]}' and MedicineName = '{notify[3]}'")
+                medcine_amount = 0
+                for result in medicine_find:
+                    medcine_name = result[2]
+                    medicine_type = result[5]
+                    medcine_amount = result[3]
                     break
                 pass
                 MedMenuItem = CarouselColumn(
@@ -31,11 +35,8 @@ class ShowNotifyActions:
                         title=f'{medicine_type}',
                         text=f'{notify[3]}({notify[4]})\n\n上次吃藥日期為{notify[6]}',
                         actions=[
-                            PostbackTemplateAction(
-                                label='刪除',
-                                text=f'刪除提醒 - {notify[3]}({notify[4]})',
-                                data=f'delete;{notify[0]}'
-                            )
+                            PostbackTemplateAction(label='刪除',text=f'刪除提醒 - {notify[3]}({notify[4]})',data=f'delete;{notify[0]}'),
+                            PostbackTemplateAction(label='藥量',text=f'查看藥量 - {notify[3]}({notify[4]})',data=f'amount;{notify[0]};{medcine_name};{medcine_amount}')
                         ]
                     )
                 takeMedMenu.columns.append(MedMenuItem)
@@ -69,10 +70,35 @@ class ShowNotifyActions:
         if theAct == "delete":
             _msg += "已刪除提醒"
             self.db_manager.execute(f"Delete From Notify Where UserID = '{user_id}' and ID = '{selected_notify_id}'")
+        elif theAct == "amount":
+            _msg += f"{input_datas[2]}"
+            _msg += "剩餘藥量"
+            _msg += "\n" + self.ProgressBarStr(int(input_datas[3]),100)
         pass
 
         # reply msg
         self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{_msg}"))
+    pass
+
+    # Print iterations progress
+    def ProgressBarStr (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+        """
+        Call in a loop to create terminal progress bar
+        @params:
+            iteration   - Required  : current iteration (Int)
+            total       - Required  : total iterations (Int)
+            prefix      - Optional  : prefix string (Str)
+            suffix      - Optional  : suffix string (Str)
+            decimals    - Optional  : positive number of decimals in percent complete (Int)
+            length      - Optional  : character length of bar (Int)
+            fill        - Optional  : bar fill character (Str)
+            printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+        """
+        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+        filledLength = int(length * iteration // total)
+        bar = fill * filledLength + '-' * (length - filledLength)
+        o_str = f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd
+        return o_str
     pass
 
 pass
