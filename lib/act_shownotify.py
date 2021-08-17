@@ -79,8 +79,8 @@ class ShowNotifyActions:
                 progess_msg = json.load(f)
                 progess_msg['body']['contents'][0]['contents'][0]['contents'][0]['text'] = f"{input_datas[2]}"
                 progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = f"剩下{input_datas[3]}個"
-                progess_msg['body']['contents'][0]['contents'][1]['text'] = f"{float(input_datas[3]) / 100.0}%"
-                progess_msg['body']['contents'][1]['width'] = f"{float(input_datas[3]) / 100.0}%"
+                progess_msg['body']['contents'][0]['contents'][1]['text'] = f"{100.0 * (float(input_datas[3]) / 100.0)}%"
+                progess_msg['body']['contents'][1]['width'] = f"{100.0 * (float(input_datas[3]) / 100.0)}%"
                 self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"{_msg}")
                 ,FlexSendMessage(alt_text="藥量顯示",contents=progess_msg)])
             pass
