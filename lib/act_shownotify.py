@@ -75,7 +75,7 @@ class ShowNotifyActions:
         elif theAct == "amount":
             _msg += f"{input_datas[2]}"
             _msg += "剩餘藥量"
-            with open('msg_progessbar.json', 'r') as f:
+            with open('./msg_progessbar.json', 'r') as f:
                 progess_msg = json.load(f)
                 progess_msg['body']['contents'][0]['contents'][0]['contents'][0]['text'] = f"{input_datas[2]}"
                 progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = f"剩下{input_datas[3]}個"
