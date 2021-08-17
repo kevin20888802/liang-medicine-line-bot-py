@@ -82,7 +82,8 @@ class ShowHealthStatActions:
             img_link = uploaded_image.link
             os.remove(PATH)
             self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"以下是您的{typeName}紀錄\n\n{_msg}"),
-            ImageSendMessage(original_content_url=img_link,preview_image_url=img_link)])
+            ImageSendMessage(original_content_url=img_link,preview_image_url=img_link),
+            TextSendMessage(text=f"{img_link}")])
             self.userstat.SetUserStatus(user_id,"","")
         else:
             self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"奇怪...對不起我找不到紀錄表沒辦法給你看看"))
