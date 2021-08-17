@@ -27,7 +27,7 @@ class ShowNotifyActions:
                 for result in medicine_find:
                     medcine_name = result[2]
                     medicine_type = result[5]
-                    medcine_amount = result[3]
+                    medcine_amount = int(result[3])
                     break
                 pass
                 MedMenuItem = CarouselColumn(
@@ -73,6 +73,7 @@ class ShowNotifyActions:
         elif theAct == "amount":
             _msg += f"{input_datas[2]}"
             _msg += "剩餘藥量"
+            print(input_datas[3])
             _msg += "\n" + self.ProgressBarStr(int(input_datas[3]),100)
         pass
 
