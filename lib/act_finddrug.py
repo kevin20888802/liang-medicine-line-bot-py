@@ -36,7 +36,7 @@ class FindDrugActions:
         theMenu = CarouselTemplate(columns=[])
     
         MenuItem_0 = CarouselColumn(
-                thumbnail_image_url="https://i.imgur.com/uMyD6TA.png",
+                thumbnail_image_url="https://i.imgur.com/gV2t5qV.jpg",
                 title=f'藥名',
                 text=f'請問您要尋找的的藥是？請使用相機滑到最左邊的文字辨識功能或者用畫面左下的鍵盤按鈕打字讓我看看！',
                 actions=[

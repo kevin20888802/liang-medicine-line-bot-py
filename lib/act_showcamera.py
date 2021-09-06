@@ -16,7 +16,7 @@ class ShowCamera:
         theMenu = CarouselTemplate(columns=[])
     
         MenuItem_0 = CarouselColumn(
-                thumbnail_image_url="https://i.imgur.com/uMyD6TA.png",
+                thumbnail_image_url="https://i.imgur.com/gV2t5qV.jpg",
                 title=f'掃描',
                 text=f'開啟相機拍下QR Code',
                 actions=[

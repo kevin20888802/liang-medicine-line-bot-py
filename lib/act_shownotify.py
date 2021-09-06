@@ -25,10 +25,12 @@ class ShowNotifyActions:
                 medicine_type = ""
                 medicine_find = self.db_manager.execute(f"Select * From UserMedicine Where UserID = '{notify[1]}' and MedicineName = '{notify[3]}'")
                 medcine_amount = 0
+                take_amount = 0
                 for result in medicine_find:
                     medcine_name = result[2]
                     medicine_type = result[5]
                     medcine_amount = int(result[3])
+                    take_amount = int(result[4])
                     break
                 pass
                 MedMenuItem = CarouselColumn(
@@ -37,7 +39,7 @@ class ShowNotifyActions:
                         text=f'{notify[3]}({notify[4]})\n\n上次吃藥日期為{notify[6]}',
                         actions=[
                             PostbackTemplateAction(label='刪除',text=f'刪除提醒 - {notify[3]}({notify[4]})',data=f'delete;{notify[0]}'),
-                            PostbackTemplateAction(label='藥量',text=f'查看藥量 - {notify[3]}({notify[4]})',data=f'amount;{notify[0]};{medcine_name};{medcine_amount}')
+                            PostbackTemplateAction(label='藥量',text=f'查看藥量 - {notify[3]}({notify[4]})',data=f'amount;{notify[0]};{medcine_name};{medcine_amount};{take_amount}')
                         ]
                     )
                 takeMedMenu.columns.append(MedMenuItem)
@@ -68,6 +70,12 @@ class ShowNotifyActions:
         input_datas = event.postback.data.split(";")
         theAct = input_datas[0]
         selected_notify_id = input_datas[1]
+        left_days = 0
+        try:
+            left_days = int(input_datas[3]) / int(input_datas[4])
+        except ZeroDivisionError:
+            left_days = 0
+        pass
         if theAct == "delete":
             _msg += "已刪除提醒"
             self.db_manager.execute(f"Delete From Notify Where UserID = '{user_id}' and ID = '{selected_notify_id}'")
@@ -75,11 +83,14 @@ class ShowNotifyActions:
         elif theAct == "amount":
             _msg += f"{input_datas[2]}"
             _msg += "剩餘藥量"
-            with open('./msg_progessbar.json', 'r') as f:
+            with open('./msg_progessbar.json', 'r', encoding="utf-8") as f:
                 progess_msg = json.load(f)
                 progess_msg['body']['contents'][0]['contents'][0]['contents'][0]['text'] = f"{input_datas[2]}"
-                progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = f"剩下{input_datas[3]}個"
+                #progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = "---"
+                #progess_msg['body']['contents'][0]['contents'][0]['contents'][1]['text'] = f"剩下{input_datas[3]}個\n預計[{left_days}]天後吃完"
                 progess_msg['body']['contents'][0]['contents'][1]['text'] = f"{100.0 * (float(input_datas[3]) / 100.0)}%"
+                progess_msg['body']['contents'][2]['contents'][0]['contents'][0]['text'] = f"剩餘藥量：{input_datas[3]}"
+                progess_msg['body']['contents'][2]['contents'][0]['contents'][1]['text'] = f"預計 {int(left_days)} 天後吃完"
                 progess_msg['body']['contents'][1]['width'] = f"{100.0 * (float(input_datas[3]) / 100.0)}%"
                 self.bot_api.reply_message(event.reply_token,[TextSendMessage(text=f"{_msg}")
                 ,FlexSendMessage(alt_text="藥量顯示",contents=progess_msg)])

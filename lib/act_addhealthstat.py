@@ -30,8 +30,9 @@ class AddHealthStatActions:
             )
         theMenu.columns.append(MenuItem_0)
 
-        self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="生理數值類別\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
-        self.userstat.SetUserStatus(user_id,"addhealthstat_1","")
+        #self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="生理數值類別\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
+        #self.userstat.SetUserStatus(user_id,"addhealthstat_1","")
+        self.addhealthstat_1(event)
     pass
 
     def addhealthstat_1(self,event):
@@ -40,22 +41,23 @@ class AddHealthStatActions:
 
         vaild_stat_type = {"脈搏","血壓","血糖"}
 
-        if i_msg in vaild_stat_type:    
-            theMenu = CarouselTemplate(columns=[])
-            MenuItem_0 = CarouselColumn(
-                    thumbnail_image_url="https://i.imgur.com/uMyD6TA.png",
-                    title=f'數值',
-                    text=f'請使用相機滑到最左邊的文字辨識功能拍下數字或者用畫面左下的鍵盤按鈕打字讓我看看！',
-                    actions=[
-                        CameraAction(label="開啟相機")
-                    ]
-                )
-            theMenu.columns.append(MenuItem_0)
-            self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="數字輸入\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
-            self.userstat.SetUserStatus(user_id,"addhealthstat_2",i_msg)    
-        else:
-            self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{i_msg}這個數值暫時沒有紀錄，請選擇正確的生理數值。"))
-        pass 
+        #if i_msg in vaild_stat_type:    
+        theMenu = CarouselTemplate(columns=[])
+        MenuItem_0 = CarouselColumn(
+                thumbnail_image_url="https://i.imgur.com/gV2t5qV.jpg",
+                title=f'數值',
+                text=f'請使用相機滑到最左邊的文字辨識功能拍下數字或者用畫面左下的鍵盤按鈕打字讓我看看！',
+                actions=[
+                    CameraAction(label="開啟相機")
+                ]
+            )
+        theMenu.columns.append(MenuItem_0)
+        self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="數字輸入\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
+        #self.userstat.SetUserStatus(user_id,"addhealthstat_2",i_msg)    
+        self.userstat.SetUserStatus(user_id,"",i_msg)   
+        #else:
+            #self.bot_api.reply_message(event.reply_token,TextSendMessage(text=f"{i_msg}這個數值暫時沒有紀錄，請選擇正確的生理數值。"))
+        #pass 
     pass
 
     def addhealthstat_2(self,event):

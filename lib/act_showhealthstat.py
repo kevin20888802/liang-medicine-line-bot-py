@@ -38,8 +38,10 @@ class ShowHealthStatActions:
             )
         theMenu.columns.append(MenuItem_0)
 
-        self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="生理數值類別\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
-        self.userstat.SetUserStatus(user_id,"showhealthstat_1","")
+        #self.bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="生理數值類別\n（電腦版可能無法顯示請直接輸入名稱）", template=theMenu))
+        #self.userstat.SetUserStatus(user_id,"showhealthstat_1","")
+        self.bot_api.reply_message(event.reply_token,TextSendMessage(text="https://liff.line.me/1656360466-jaG2z15l"))
+        self.userstat.SetUserStatus(user_id,"","")
     pass
 
     def showhealthstat_1(self,event):

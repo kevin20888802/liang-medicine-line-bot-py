@@ -96,6 +96,7 @@ class Menu_Manager:
         self.QuickReplyMenus["health_menu"] = QuickReply(items=[
                     QuickReplyButton(action=MessageAction(label="新增生理紀錄",text="新增生理紀錄")),
                     QuickReplyButton(action=MessageAction(label="查看生理紀錄",text="查看生理紀錄")),
+                    QuickReplyButton(action=MessageAction(label="授權",text="授權")),
                     QuickReplyButton(action=MessageAction(label="主選單",text="主選單"))
                 ])
 

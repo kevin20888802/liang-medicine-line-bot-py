@@ -64,6 +64,22 @@ menu_manage = Menu_Manager(db_manager,line_bot_api,userstat)
 
 #------------------------------------------------
 
+@app.route("/healthstat", methods=['GET'])
+def healthWeb():
+    web_page="<div align=\"middle\">"
+    web_page+="<h1>中華電信MOD電影推薦大師</h1>"
+    web_page+="<form action=\"/result\" method=\"POST\">"
+    web_page+="<h3>請寫一段目前最貼近你心情的一句話<br>系統將推薦電影可以訂閱</h3>"
+    web_page+="<input name=\"testDoc\" type=\"text\"></input>"
+    web_page+="<input type=\"submit\"></input>"
+    web_page+="</form>"
+    web_page+="<img src=\"https://web-eshop.cdn.hinet.net/eShop%20Images/Discount%20Information/3Broadband/2020_MOD_300x300-MOD.png\">"
+    web_page+="</div>"
+    return web_page
+pass
+
+#------------------------------------------------
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
