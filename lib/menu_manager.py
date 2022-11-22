@@ -64,9 +64,9 @@ class Menu_Manager:
             RichMenuArea(bounds=RichMenuBounds(x=834, y=843, width=drug_menu_size[0] / 3, height=drug_menu_size[1] / 2),action=MessageAction(label='act4', text='吃藥紀錄')),
             RichMenuArea(bounds=RichMenuBounds(x=1668, y=843, width=drug_menu_size[0] / 3, height=drug_menu_size[1] / 2),action=MessageAction(label='act5', text='主選單'))
             ])
-        #self.menu_ids["drug_menu"] = self.line_bot_api.create_rich_menu(rich_menu=drug_menu)
+        self.menu_ids["drug_menu"] = self.line_bot_api.create_rich_menu(rich_menu=drug_menu)
         with open("lib/MenuImg/richmenu_1628187718435.png", 'rb') as f:
-            #self.line_bot_api.set_rich_menu_image(self.menu_ids["drug_menu"], "image/png", f)
+            self.line_bot_api.set_rich_menu_image(self.menu_ids["drug_menu"], "image/png", f)
             pass
         pass
         self.QuickReplyMenus["drug_menu"] = QuickReply(items=[
@@ -88,9 +88,9 @@ class Menu_Manager:
             RichMenuArea(bounds=RichMenuBounds(x=834, y=0, width=health_menu_size[0] / 3, height=health_menu_size[1]),action=MessageAction(label='act1', text='查看生理紀錄')),
             RichMenuArea(bounds=RichMenuBounds(x=1668, y=0, width=health_menu_size[0] / 3, height=health_menu_size[1]),action=MessageAction(label='act2', text='主選單'))
             ])
-        #self.menu_ids["health_menu"] = self.line_bot_api.create_rich_menu(rich_menu=health_menu)
+        self.menu_ids["health_menu"] = self.line_bot_api.create_rich_menu(rich_menu=health_menu)
         with open("lib/MenuImg/richmenu_1628187718435_2.png", 'rb') as f:
-            #self.line_bot_api.set_rich_menu_image(self.menu_ids["health_menu"], "image/png", f)
+            self.line_bot_api.set_rich_menu_image(self.menu_ids["health_menu"], "image/png", f)
             pass
         pass
         self.QuickReplyMenus["health_menu"] = QuickReply(items=[
